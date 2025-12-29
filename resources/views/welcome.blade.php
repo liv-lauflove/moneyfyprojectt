@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Home</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=home" />
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -12,80 +14,87 @@
 
     <!-- NAVBAR -->
     <nav>
-        <nav
-            class="relative flex items-center justify-between sm:h-16 px-10 bg-[#0b2250] text-white border-b border-white/10">
-            <div class="flex items-center flex-1 md:absolute md:inset-y-0 md:left-0 md:ml-24">
-                <div class="flex items-center justify-between w-full md:w-auto">
-                    <a href="" aria-label="Home">
-                        <img src="https://www.svgrepo.com/show/491978/gas-costs.svg" height="40" width="40" />
-                    </a>
-                    <div class="-mr-2 flex items-center md:hidden">
-                        <button type="button" id="main-menu" aria-label="Main menu" aria-haspopup="true"
-                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                            <svg stroke="currentColor" fill="none" viewBox="0 0 24 24" class="h-6 w-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h16"></path>
-                            </svg>
-                        </button>
+        <div class="fixed inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow
+    backdrop-blur-lg md:top-6 md:rounded-3xl lg:max-w-screen-lg">
+            <div class="px-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex shrink-0">
+                        <a aria-current="page" class="flex items-center" href="#"
+                            onclick="event.preventDefault(); scrollToSection('home-page')">
+                            <img class="h-7 w-auto">
+                            <span class="material-symbols-outlined">
+                                home
+                            </span>
+                            <p class="sr-only">Moneyfy</p>
+                        </a>
+                    </div>
+                    <div class="hidden md:flex md:items-center md:justify-center md:gap-5">
+                        <a href="#" onclick="event.preventDefault(); scrollToSection('layouts')"
+                            class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900">
+                            How it works
+                        </a>
+
+                        <a href="#" onclick="event.preventDefault(); scrollToSection('review')"
+                            class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900">
+                            Review
+                        </a>
+                    </div>
+                    <div class="flex items-center justify-end gap-3">
+                        <a class="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
+                            href="/register">Sign in</a>
+                        <a class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                            href="/login">Login</a>
                     </div>
                 </div>
             </div>
-            <div class="hidden md:flex md:space-x-10 md:ml-32">
-                <a href="#Features"
-                    class="font-medium text-sm text-white hover:text-blue-200 transition duration-150 ease-in-out">Features</a>
-                <a href="#About"
-                    class="font-medium text-sm text-white hover:text-blue-200 transition duration-150 ease-in-out">About</a>
-                <a href="#Testimonials"
-                    class="font-medium text-sm text-white hover:text-blue-200 transition duration-150 ease-in-out">Testimonials</a>
-            </div>
-            <div class="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-24">
-                <span class="inline-flex">
-                    <a href="/login"
-                        class="inline-flex items-center px-4 py-1.5 text-sm leading-6 font-medium text-white border border-white/40 rounded-md hover:bg-white/10 transition duration-150 ease-in-out">
-                        Log In
-                    </a>
-                </span>
-                <span class="inline-flex rounded-md shadow ml-2">
-                    <a href="/signup"
-                        class="inline-flex items-center px-4 py-1.5 text-sm leading-6 font-medium rounded-md text-white bg-[#2563eb] hover:bg-[#1d4ed8] transition duration-150 ease-in-out">
-                        Get started
-                    </a>
-                </span>
-            </div>
-        </nav>
+        </div>
     </nav>
 
     <!-- HERO SECTION -->
-    <section class="px-10 md:px-24 py-20 bg-[#0b2250] text-white">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between space-y-10 md:space-y-0">
-
-            <!-- Text Content -->
-            <div class="md:w-1/2">
-                <h1 class="text-5xl md:text-7xl font-semibold leading-snug mb-8 max-w-xl">
-                    Take control of <br />
-                    your money <br />
-                    today
-                </h1>
-                <p class="text-base md:text-lg text-gray-300 mb-8 max-w-xl">
-                    Track every income and expense. Monefy makes it simple to <br />
-                    see where your money goes and build better financial habits. <br />
-                </p>
-                <a href="#"
-                    class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white text-sm font-medium px-5 py-2 rounded-md transition duration-200">
-                    Get Started
-                </a>
-            </div>
-
-            <!-- Hero Image -->
-            <div class="md:w-1/2">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzJOBc888horStIw5v_cpA6OOGG39NMeDgEg&s"
-                    alt="Hero Image" class="rounded-lg shadow-lg w-full" />
+    <section id="home-page" class="px-2 py-32 bg-[#112250] md:px-0">
+        <div class="container items-center max-w-6xl px-8 mx-auto xl:px-5">
+            <div class="flex flex-wrap items-center sm:-mx-3">
+                <div class="w-full md:w-1/2 md:px-3">
+                    <div
+                        class="w-full pb-6 space-y-6 sm:max-w-md lg:max-w-lg md:space-y-4 lg:space-y-8 xl:space-y-9 sm:pr-5 lg:pr-0 md:pb-0">
+                        <h1
+                            class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-4xl lg:text-5xl xl:text-6xl">
+                            <span class="block xl:inline">Take control of</span>
+                            <span class="block xl:inline">your money today.</span>
+                        </h1>
+                        <p class="mx-auto text-base text-white sm:max-w-md lg:text-xl md:max-w-3xl">Track every
+                            income and expense. Monefy makes it simple to see where your money goes and build better
+                            financial habits.</p>
+                        <div class="relative flex flex-col sm:flex-row sm:space-x-4">
+                            <a href="/login"
+                                class="flex items-center w-full px-6 py-3 mb-3 text-sm text-white bg-indigo-600 rounded-md sm:mb-0 hover:bg-indigo-700 sm:w-auto">
+                                Login
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                            <a href="#_"
+                                class="flex items-center px-6 py-3 text-black bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-600">
+                                Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <div class="w-full h-auto overflow-hidden rounded-md shadow-xl sm:rounded-xl">
+                        <img
+                            src="https://images.unsplash.com/photo-1498049860654-af1a5c566876?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80">
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- SECTION (LAYOUT) -->
-    <section class="py-20 px-4 bg-[#f5ebdc]">
+    <section id="layouts" class="py-20 px-4 bg-[#f5ebdc]">
         <div class="container mx-auto max-w-7xl">
             <!-- Section Header -->
             <div class="text-center max-w-3xl mx-auto mb-16">
@@ -102,7 +111,7 @@
                 <!-- Card 1 -->
                 <div class="group">
                     <div class="relative overflow-hidden rounded-xl mb-4">
-                        <img src="GAMBAR-1.jpg" alt="Record your income and expenses"
+                        <img src="{{ asset('assets/images/img-1.JPG') }}" alt="Record your income and expenses"
                             class="w-full h-48 object-cover object-center rounded-xl" />
                     </div>
                     <div class="text-center">
@@ -119,7 +128,7 @@
                 <!-- Card 2 -->
                 <div class="group">
                     <div class="relative overflow-hidden rounded-xl mb-4">
-                        <img src="GAMBAR-2.jpg" alt="Monitor where money goes"
+                        <img src="{{ asset('assets/images/img-2.jpg') }}" alt="Monitor where money goes"
                             class="w-full h-48 object-cover object-center rounded-xl" />
                     </div>
                     <div class="text-center">
@@ -136,7 +145,7 @@
                 <!-- Card 3 -->
                 <div class="group">
                     <div class="relative overflow-hidden rounded-xl mb-4">
-                        <img src="GAMBAR-3.jpg" alt="Visualize your financial progress"
+                        <img src="{{ asset('assets/images/img-3.jpg') }}" alt="Visualize your financial progress"
                             class="w-full h-48 object-cover object-center rounded-xl" />
                     </div>
                     <div class="text-center">
@@ -187,7 +196,7 @@
 
 
     <!-- Testimonials section -->
-    <section class="bg-white py-16 px-8">
+    <section id="review" class="bg-white py-16 px-8">
         <div class="max-w-6xl mx-auto">
             <h2 class="mb-2 text-4xl sm:text-5xl font-semibold text-gray-900 text-left">Real stories</h2>
             <p class="text-sm text-black mb-12 text-left"> What users are saying </p>
@@ -302,39 +311,9 @@
                         <img src="https://i.pravatar.cc/48?img=32" alt="Jane Smith avatar"
                             class="w-10 h-10 rounded-full">
                         <div>
-                            <p class="text-sm font-semibold text-black">Gareth Smith</p>
+                            <p class="text-sm font-semibold text-black">Jane Smith</p>
                             <p class="text-xs text-black">Small business owner</p>
                         </div>
-                    </div>
-                </div>
-
-                <!-- pagination dots -->
-                <div class="mt-10 flex items-center space-x-2">
-                    <span class="w-2 h-2 rounded-full bg-black"></span>
-                    <span class="w-2 h-2 rounded-full bg-gray-300"></span>
-                    <span class="w-2 h-2 rounded-full bg-gray-300"></span>
-                </div>
-
-                <!-- Panah -->
-                <div class="mt-10 flex justify-end">
-                    <div class="flex items-center space-x-3">
-                        <!-- button panah kiri untuk navigasi, digambar pakai SVG. -->
-                        <button type="button"
-                            class="flex items-center justify-center w-10 h-10 border border-gray-300 rounded-md text-black bg-white shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="none"
-                                stroke="currentColor" stroke-width="1.5">
-                                <path d="M11.5 5L7 9.5L11.5 14" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-
-                        <!-- tombol panah kanan untuk ke item berikutnya -->
-                        <button type="button"
-                            class="flex items-center justify-center w-10 h-10 border border-gray-300 rounded-md text-black bg-white shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="none"
-                                stroke="currentColor" stroke-width="1.5">
-                                <path d="M8.5 5L13 9.5L8.5 14" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -354,8 +333,9 @@
                     Join thousands of users who've taken control of their finances. Sign up in seconds <br />
                     and start tracking today.</p>
                 <button
-                    class="relative mt-3 bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded text-xs md:text-sm font-medium text-white">
-                    Get Started
+                    class="relative mt-3 bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded text-xs md:text-sm font-medium text-white"><a
+                        href="/register">Get Started</a>
+
                 </button>
             </div>
     </section>
@@ -368,7 +348,7 @@
                 <h3 class="text-2xl font-semibold text-white">Moneyfy</h3>
                 <div class="space-y-1 text-sm">
                     <p class="font-semibold text-slate-100">Address</p>
-                    <p class="text-slate-300">Level 1, 12 Sample St, Sydney NSW 2000</p>
+                    <p class="text-slate-300">Jln. Bedugul, Undiknas University</p>
                 </div>
 
                 <div class="space-y-1 text-sm">
@@ -503,7 +483,17 @@
         </div>
     </div>
 
-    <!-- Credit: Componentity.com -->
+    <script>
+        function scrollToSection(id) {
+            const section = document.getElementById(id);
+            if (!section) return;
+
+            section.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    </script>
 
 </body>
 
