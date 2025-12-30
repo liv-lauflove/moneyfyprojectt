@@ -31,7 +31,7 @@
                     <div class="hidden md:flex md:items-center md:justify-center md:gap-5">
                         <a href="#" onclick="event.preventDefault(); scrollToSection('layouts')"
                             class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900">
-                            How it works
+                            Features
                         </a>
 
                         <a href="#" onclick="event.preventDefault(); scrollToSection('review')"
@@ -160,37 +160,38 @@
     </section>
 
     <!-- STATS SECTION -->
-    <div class="px-10 md:px-24 py-20 bg-[#013374]">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row md:items-start md:justify-between">
-                <h2 class="mt-8 text-3xl md:text-4xl font-semibold text-white md:w-1/2 text-left">
-                    Numbers that speak<br />for themselves
-                </h2>
-                <p class="mt-1 md:mt-0 text-[14px] md:text-[16px] leading-snug text-white/80 md:w-1/2 text-left">
-                    Thousands of users trust Monefy to manage their money. See <br />
-                    what our community has accomplished together.
-                </p>
+    <section>
+        <div class="px-10 md:px-24 py-20 bg-[#013374]">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+                    <h2 class="mt-8 text-3xl md:text-4xl font-semibold text-white md:w-1/2 text-left">
+                        Numbers that speak<br />for themselves
+                    </h2>
+                    <p class="mt-1 md:mt-0 text-[14px] md:text-[16px] leading-snug text-white/80 md:w-1/2 text-left">
+                        Thousands of users trust Monefy to manage their money. See <br />
+                        what our community has accomplished together.
+                    </p>
+                </div>
+
+                <dl class="mt-14 grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-white/40 divide-solid">
+                    <div class="flex flex-col items-start px-6 py-4 border-l border-white/40">
+                        <dd class="text-6xl font-extrabold text-white">50K+</dd>
+                        <dt class="mt-3 text-sm text-white/80">Active users</dt>
+                    </div>
+
+                    <div class="flex flex-col items-start px-6 py-4">
+                        <dd class="text-6xl font-extrabold text-white">$2B</dd>
+                        <dt class="mt-3 text-sm text-white/80">Tracked annually</dt>
+                    </div>
+
+                    <div class="flex flex-col items-start px-6 py-4">
+                        <dd class="text-6xl font-extrabold text-white">25%</dd>
+                        <dt class="mt-3 text-sm text-white/80">Average savings rate</dt>
+                    </div>
+                </dl>
             </div>
-
-            <dl class="mt-14 grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-white/40 divide-solid">
-                <div class="flex flex-col items-start px-6 py-4 border-l border-white/40">
-                    <dd class="text-6xl font-extrabold text-white">50K+</dd>
-                    <dt class="mt-3 text-sm text-white/80">Active users</dt>
-                </div>
-
-                <div class="flex flex-col items-start px-6 py-4">
-                    <dd class="text-6xl font-extrabold text-white">$2B</dd>
-                    <dt class="mt-3 text-sm text-white/80">Tracked annually</dt>
-                </div>
-
-                <div class="flex flex-col items-start px-6 py-4">
-                    <dd class="text-6xl font-extrabold text-white">25%</dd>
-                    <dt class="mt-3 text-sm text-white/80">Average savings rate</dt>
-                </div>
-            </dl>
         </div>
-    </div>
-
+    </section>
 
     <!-- Testimonials section -->
     <section id="review" class="bg-white py-16 px-8">
@@ -317,24 +318,24 @@
 
     <!-- CTA -->
     <section class="bg-[#f5f0e9] py-16 px-8">
-    <div class="w-full max-w-6xl mx-auto px-8 md:px-0 py-2 md:ml-16 md:">
-        <div class="rounded-2xl w-full mx-auto px-10 py-12 flex flex-col items-center justify-center gap-y-4 bg-gradient-to-b from-[#006ba6] to-[#00466e]">
-        <h3
-            class="text-3xl md:text-4xl lg:text-5xl max-w-xl lg:max-w-3xl mx-auto font-bold text-white text-center">
-            Start managing your <br/>
-            money now</h3>
-        <p
-            class="text-base md:text-lg lg:text-xl text-center text-gray-100 dark:text-gray-200">
-            Join thousands of users who've taken control of their finances. Sign up in seconds <br/>
-            and start tracking today.</p>
-        <button
-            class="relative mt-3 bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded text-xs md:text-sm font-medium text-white">
-            Get Started
-        </button>
-        </div>
-    </div>
+        <div class="max-w-6xl mx-auto">
+            <div
+                class="rounded-2xl w-full mx-auto px-10 py-12 flex flex-col items-center justify-center gap-y-4 bg-gradient-to-b from-[#006ba6] to-[#00466e]">
+                <h3
+                    class="text-3xl md:text-4xl lg:text-5xl max-w-xl lg:max-w-3xl mx-auto font-bold text-white text-center">
+                    Start managing your <br />
+                    money now</h3>
+                <p class="text-base md:text-lg lg:text-xl text-center text-gray-100 dark:text-gray-200">
+                    Join thousands of users who've taken control of their finances. Sign up in seconds <br />
+                    and start tracking today.</p>
+                <button
+                    class="relative mt-3 bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded text-xs md:text-sm font-medium text-white">
+                    Get Started
+                </button>
+            </div>
     </section>
-     
+    </div>
+
 
     <!-- FOOTER -->
     <footer class="bg-[#071b4a] text-slate-200">
@@ -343,27 +344,28 @@
             <div class="p-5 md:p-0 space-y-6">
                 <h3 class="text-2xl font-semibold text-white">Moneyfy</h3>
                 <div class="space-y-1 text-sm">
-                <p class="font-semibold text-slate-100">Address</p>
-                <p class="text-slate-300">Level 1, 12 Sample St, Sydney NSW 2000</p>
+                    <p class="font-semibold text-slate-100">Address</p>
+                    <p class="text-slate-300">Level 1, 12 Sample St, Sydney NSW 2000</p>
                 </div>
-            
 
-            <div class="space-y-1 text-sm">
-                <p class="font-semibold text-slate-100">Contact</p>
-                <a href="tel:18001234567" class="block text-slate-300 hover:text-white">1800 123 4567</a>
-                <a href="mailto:support@financetracker.com" class="block text-slate-300 hover:text-white">
-                    support@financetracker.com
-                </a>
-            </div>
 
-            <!-- Bagian Social Media Icons -->
-            <div class="flex items-center gap-2 pt-2">
-                <a href="/#" class="w-6 mx-1">
-                    <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%" height="100%"
-                        viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
-                        style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
-                        <path id="Twitter" d="M24,12c0,6.627 -5.373,12 -12,12c-6.627,0 -12,-5.373 -12,-12c0,-6.627
+                <div class="space-y-1 text-sm">
+                    <p class="font-semibold text-slate-100">Contact</p>
+                    <a href="tel:18001234567" class="block text-slate-300 hover:text-white">1800 123 4567</a>
+                    <a href="mailto:support@financetracker.com" class="block text-slate-300 hover:text-white">
+                        support@financetracker.com
+                    </a>
+                </div>
+
+                <!-- Bagian Social Media Icons -->
+                <div class="flex items-center gap-2 pt-2">
+                    <a href="/#" class="w-6 mx-1">
+                        <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%"
+                            height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+                            xmlns:serif="http://www.serif.com/"
+                            style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
+                            <path id="Twitter" d="M24,12c0,6.627 -5.373,12 -12,12c-6.627,0 -12,-5.373 -12,-12c0,-6.627
                     5.373,-12 12,-12c6.627,0 12,5.373 12,12Zm-6.465,-3.192c-0.379,0.168
                     -0.786,0.281 -1.213,0.333c0.436,-0.262 0.771,-0.676
                     0.929,-1.169c-0.408,0.242 -0.86,0.418 -1.341,0.513c-0.385,-0.411
@@ -377,28 +379,30 @@
                     -0.339,-0.01 -0.504,-0.03c0.934,0.599 2.044,0.949 3.237,0.949c3.883,0
                     6.007,-3.217 6.007,-6.008c0,-0.091 -0.002,-0.183 -0.006,-0.273c0.413,-0.298
                     0.771,-0.67 1.054,-1.093Z"></path>
-                    </svg>
-                </a>
-                <a href="/#" class="w-6 mx-1">
-                    <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%" height="100%"
-                        viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
-                        style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
-                        <path id="Facebook" d="M24,12c0,6.627 -5.373,12 -12,12c-6.627,0 -12,-5.373 -12,-12c0,-6.627
+                        </svg>
+                    </a>
+                    <a href="/#" class="w-6 mx-1">
+                        <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%"
+                            height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+                            xmlns:serif="http://www.serif.com/"
+                            style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
+                            <path id="Facebook" d="M24,12c0,6.627 -5.373,12 -12,12c-6.627,0 -12,-5.373 -12,-12c0,-6.627
                     5.373,-12 12,-12c6.627,0 12,5.373
                     12,12Zm-11.278,0l1.294,0l0.172,-1.617l-1.466,0l0.002,-0.808c0,-0.422
                     0.04,-0.648 0.646,-0.648l0.809,0l0,-1.616l-1.295,0c-1.555,0 -2.103,0.784
                     -2.103,2.102l0,0.97l-0.969,0l0,1.617l0.969,0l0,4.689l1.941,0l0,-4.689Z"></path>
-                    </svg>
-                </a>
-                <a href="/#" class="w-6 mx-1">
-                    <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%" height="100%"
-                        viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
-                        style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
-                        <g id="Layer_1">
-                            <circle id="Oval" cx="12" cy="12" r="12"></circle>
-                            <path id="Shape" d="M19.05,8.362c0,-0.062 0,-0.125 -0.063,-0.187l0,-0.063c-0.187,-0.562
+                        </svg>
+                    </a>
+                    <a href="/#" class="w-6 mx-1">
+                        <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%"
+                            height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+                            xmlns:serif="http://www.serif.com/"
+                            style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
+                            <g id="Layer_1">
+                                <circle id="Oval" cx="12" cy="12" r="12"></circle>
+                                <path id="Shape" d="M19.05,8.362c0,-0.062 0,-0.125 -0.063,-0.187l0,-0.063c-0.187,-0.562
                         -0.687,-0.937 -1.312,-0.937l0.125,0c0,0 -2.438,-0.375 -5.75,-0.375c-3.25,0
                         -5.75,0.375 -5.75,0.375l0.125,0c-0.625,0 -1.125,0.375
                         -1.313,0.937l0,0.063c0,0.062 0,0.125 -0.062,0.187c-0.063,0.625 -0.25,1.938
@@ -412,15 +416,16 @@
                         -0.204,-0.34l0,-4.631c0,-0.136 0.068,-0.273 0.204,-0.341c0.136,-0.068
                         0.272,-0.068 0.409,0l3.201,2.316c0.068,0.068 0.136,0.204
                         0.136,0.34c0.068,0.136 0,0.273 -0.136,0.341Z" style="fill: rgb(255, 255, 255);"></path>
-                        </g>
-                    </svg>
-                </a>
-                <a href="/#" class="w-6 mx-1">
-                    <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%" height="100%"
-                        viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
-                        style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
-                        <path id="Shape" d="M7.3,0.9c1.5,-0.6 3.1,-0.9 4.7,-0.9c1.6,0 3.2,0.3 4.7,0.9c1.5,0.6 2.8,1.5
+                            </g>
+                        </svg>
+                    </a>
+                    <a href="/#" class="w-6 mx-1">
+                        <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%"
+                            height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+                            xmlns:serif="http://www.serif.com/"
+                            style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
+                            <path id="Shape" d="M7.3,0.9c1.5,-0.6 3.1,-0.9 4.7,-0.9c1.6,0 3.2,0.3 4.7,0.9c1.5,0.6 2.8,1.5
                     3.8,2.6c1,1.1 1.9,2.3 2.6,3.8c0.7,1.5 0.9,3 0.9,4.7c0,1.7 -0.3,3.2
                     -0.9,4.7c-0.6,1.5 -1.5,2.8 -2.6,3.8c-1.1,1 -2.3,1.9 -3.8,2.6c-1.5,0.7
                     -3.1,0.9 -4.7,0.9c-1.6,0 -3.2,-0.3 -4.7,-0.9c-1.5,-0.6 -2.8,-1.5
@@ -434,26 +439,27 @@
                     -0.8,0.8 -0.9,1.3l-0.1,-1.3l-3,0l0.1,2l0,6.5l3,0l0,-4.5c0,-0.6 0.1,-1.1
                     0.4,-1.5c0.3,-0.4 0.6,-0.5 1.1,-0.5c0.5,0 0.9,0.2 1.1,0.5c0.2,0.3 0.4,0.8
                     0.4,1.5l0,4.5l2.9,0Z"></path>
-                    </svg>
-                </a>
-                <a href="/#" class="w-6 mx-1">
-                    <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%" height="100%"
-                        viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
-                        style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
-                        <path id="Combined-Shape" d="M12,24c6.627,0 12,-5.373 12,-12c0,-6.627 -5.373,-12 -12,-12c-6.627,0
+                        </svg>
+                    </a>
+                    <a href="/#" class="w-6 mx-1">
+                        <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%"
+                            height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+                            xmlns:serif="http://www.serif.com/"
+                            style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
+                            <path id="Combined-Shape" d="M12,24c6.627,0 12,-5.373 12,-12c0,-6.627 -5.373,-12 -12,-12c-6.627,0
                     -12,5.373 -12,12c0,6.627 5.373,12 12,12Zm6.591,-15.556l-0.722,0c-0.189,0
                     -0.681,0.208 -0.681,0.385l0,6.422c0,0.178 0.492,0.323
                     0.681,0.323l0.722,0l0,1.426l-4.675,0l0,-1.426l0.935,0l0,-6.655l-0.163,0l-2.251,8.081l-1.742,0l-2.222,-8.081l-0.168,0l0,6.655l0.935,0l0,1.426l-3.74,0l0,-1.426l0.519,0c0.203,0
                     0.416,-0.145 0.416,-0.323l0,-6.422c0,-0.177 -0.213,-0.385
                     -0.416,-0.385l-0.519,0l0,-1.426l4.847,0l1.583,5.704l0.042,0l1.598,-5.704l5.021,0l0,1.426Z"></path>
-                    </svg>
-                </a>
-            </div>
+                        </svg>
+                    </a>
+                </div>
             </div>
 
             <!-- Bagian Column links -->
-           <div class="p-5 md:p-0 md:justify-self-end">
+            <div class="p-5 md:p-0 md:justify-self-end">
                 <a class="block text-sm text-slate-200 hover:text-white" href="/#">About us</a>
                 <a class="mt-2 block text-sm text-slate-200 hover:text-white" href="/#">Features</a>
                 <a class="mt-2 block text-sm text-slate-200 hover:text-white" href="/#">Pricing</a>
@@ -467,21 +473,22 @@
                 <a class="mt-2 block text-sm text-slate-200 hover:text-white" href="/#">Contact us</a>
                 <a class="mt-2 block text-sm text-slate-200 hover:text-white" href="/#">Integrations</a>
             </div>
-            </div>
-    
-            <!-- Bagian border -->
-            <div class="max-w-6xl mx-auto px-8 -translate-y-8 border-t border-slate-500/60"></div>
+        </div>
 
-            <!-- bottom footer -->
-            <div class="max-w-6xl mx-auto px-8 py-4 -translate-y-8 flex items-center justify-between text-xs text-slate-300">
-                    <p class="mb-3 md:mb-0 -translate-x-8">© 2025 Finance Tracker. All rights reserved.</p>
+        <!-- Bagian border -->
+        <div class="max-w-6xl mx-auto px-8 -translate-y-8 border-t border-slate-500/60"></div>
 
-                <div class="flex gap-6 translate-x-8">
-                    <a href="/#" class="hover:text-white">Privacy policy</a>
-                    <a href="/#" class="hover:text-white">Terms of service</a>
-                    <a href="/#" class="hover:text-white">Cookies settings</a>
-                </div>
+        <!-- bottom footer -->
+        <div
+            class="max-w-6xl mx-auto px-8 py-4 -translate-y-8 flex items-center justify-between text-xs text-slate-300">
+            <p class="mb-3 md:mb-0 -translate-x-8">© 2025 Finance Tracker. All rights reserved.</p>
+
+            <div class="flex gap-6 translate-x-8">
+                <a href="/#" class="hover:text-white">Privacy policy</a>
+                <a href="/#" class="hover:text-white">Terms of service</a>
+                <a href="/#" class="hover:text-white">Cookies settings</a>
             </div>
+        </div>
     </footer>
 
 
