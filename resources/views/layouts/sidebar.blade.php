@@ -1,7 +1,9 @@
 <aside>
     <div class="flex">
         <!-- Sidebar -->
-        <aside class="fixed left-0 top-0 w-64 h-screen bg-gray-900 text-white flex flex-col">
+        <aside id="sidebar" class="fixed left-0 top-0 z-40 w-64 h-screen bg-gray-900 text-white flex flex-col
+           transform -translate-x-full md:translate-x-0
+           transition-transform duration-300 ease-in-out">
             <div class="p-4 border-b border-gray-800">
                 <div class="flex items-center justify-between">
                     <span class="text-xl font-bold">Moneyfy</span>
@@ -57,25 +59,8 @@
                             </div>
                             <svg class="ml-2 h-5 w-5 transform transition-transform duration-200"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
                             </svg>
                         </button>
-                        <div class="space-y-1 pl-11" id="analytics-dropdown">
-                            <a href="#"
-                                class="group flex items-center px-4 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-700 hover:text-white">
-                                Overview
-                            </a>
-                            <a href="#"
-                                class="group flex items-center px-4 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-700 hover:text-white">
-                                Reports
-                            </a>
-                            <a href="#"
-                                class="group flex items-center px-4 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-700 hover:text-white">
-                                Statistics
-                            </a>
-                        </div>
                     </div>
 
                     <!-- Team Dropdown -->
@@ -149,6 +134,8 @@
                 </div>
             </nav>
         </aside>
+        <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden"></div>
+
     </div>
 
     <script>
@@ -164,4 +151,31 @@
             });
         });
     </script>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
+
+        // Reset otomatis saat pindah ke desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 787) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+    </script>
+
 </aside>
