@@ -78,7 +78,7 @@
                         <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-6 text-white mb-8 shadow-lg transform transition duration-500 hover:scale-[1.01] card-hover animate-fadeIn"
                             style="animation-delay: 0.2s">
                             <h2 class="text-lg font-medium mb-1">Saldo Sekarang</h2>
-                            <p class="text-3xl font-bold mb-4" id="earnings-counter">Rp0</p>
+                            <p class="text-3xl font-bold mb-4"> Rp {{ number_format($saldo, 0, ',', '.') }}</p>
                             <div class="flex justify-between items-center">
                                 <span class="text-indigo-100">IDX changes on profit</span>
                                 <span
@@ -191,17 +191,40 @@
                         <!-- Component End  -->
                     </div>
                 </section>
-                <section>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="card min-w-0 overflow-hidden">
-                            @include('layouts.chart')
+                <section class="px-4 md:px-0">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+
+                        <!-- BAR CHART (KIRI) -->
+                        <div class="bg-white rounded-xl p-6 shadow-sm h-[420px] flex flex-col">
+                            <h3 class="text-lg font-semibold text-gray-700 mb-1">
+                                Product Sales
+                            </h3>
+                            <p class="text-sm text-gray-400 mb-4">
+                                Monthly Average
+                            </p>
+
+                            <div class="flex-1 relative">
+                                <canvas id="salesBarChart"></canvas>
+                            </div>
                         </div>
 
-                        <div class="card min-w-0 overflow-hidden">
-                            @include('layouts.chart')
+                        <!-- CURVE CHART (KANAN) -->
+                        <div class="bg-white rounded-xl p-6 shadow-sm h-[420px] flex flex-col">
+                            <h3 class="text-lg font-semibold text-gray-700 mb-1">
+                                Product Sales
+                            </h3>
+                            <p class="text-sm text-gray-400 mb-4">
+                                Monthly Average
+                            </p>
+
+                            <div class="flex-1 relative">
+                                <canvas id="salesCurveChart"></canvas>
+                            </div>
                         </div>
+
                     </div>
                 </section>
+
                 <section>
                     <div class="col-span-12 rounded-2xl border border-gray-200 bg-white pt-4"
                         x-data="transactionsTable()">
@@ -252,14 +275,15 @@
                                 }"></span>
                                             </td>
 
-                                            <!-- 🔽 ACTION DROPDOWN -->
-                                            <td class="py-4">
-                                                <div class="relative flex justify-center" x-data="actionDropdown()"
-                                                    @click.away="isOpen = false">
+                                            <!-- ACTION DROPDOWN -->
+                                            <td class="py-4 text-right">
+                                                <div class="relative inline-block" x-data="{ open: false }"
+                                                    @click.away="open = false">
+
                                                     <!-- Button -->
-                                                    <button x-ref="button" @click="toggle"
-                                                        class="text-gray-500 hover:text-gray-700">
-                                                        <svg width="24" height="24" fill="currentColor"
+                                                    <button @click="open = !open"
+                                                        class="p-2 rounded-full hover:bg-gray-100">
+                                                        <svg width="20" height="20" fill="currentColor"
                                                             viewBox="0 0 24 24">
                                                             <path
                                                                 d="M6 12a2 2 0 110-4 2 2 0 010 4zm6 0a2 2 0 110-4 2 2 0 010 4zm6 0a2 2 0 110-4 2 2 0 010 4z" />
@@ -267,21 +291,21 @@
                                                     </button>
 
                                                     <!-- Dropdown -->
-                                                    <div x-ref="content" class="z-50 fixed">
-                                                        <div x-show="isOpen" x-cloak
-                                                            class="w-40 rounded-xl border bg-white p-2 shadow-lg">
-                                                            <a href="#"
-                                                                class="block px-3 py-2 text-sm hover:bg-gray-100 rounded-lg">
-                                                                View More
-                                                            </a>
-                                                            <a href="#"
-                                                                class="block px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg">
-                                                                Delete
-                                                            </a>
-                                                        </div>
+                                                    <div x-show="open" x-transition x-cloak
+                                                        class="absolute right-0 mt-2 w-40 rounded-xl border bg-white shadow-lg z-[9999]">
+
+                                                        <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">
+                                                            Edit
+                                                        </a>
+
+                                                        <a href="#"
+                                                            class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                                            Delete
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </td>
+
                                         </tr>
                                     </template>
                                 </tbody>
@@ -301,11 +325,15 @@
                             </button>
                         </div>
                     </div>
-
                 </section>
             </div>
         </main>
     </x-app-layout>
+
+    <!-- Scripts -->
+    <script src="./node_modules/preline/dist/preline.js"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
 
     <script>
         // Counter animations
@@ -340,26 +368,148 @@
         // Initialize animations when page loads
         document.addEventListener('DOMContentLoaded', () => {
             // Animate counters
-            animateValue('earnings-counter', 0, 400000, 2000, 'Rp');
-            animateValue('revenue-counter', 0, 4230, 1500, 'Rp');
-            animateValue('sales-percent', 0, 3, 1000);
+            const saldo = parseInt(
+                document.getElementById('earnings-counter').dataset.saldo
+            );
 
-            // Animate progress bars after a slight delay
-            setTimeout(animateProgressBars, 500);
+            animateValue('earnings-counter', 0, saldo, 2000, 'Rp ');
+        });
+        animateValue('revenue-counter', 0, 4230, 1500, 'Rp');
+        animateValue('sales-percent', 0, 3, 1000);
 
-            // Add hover effect to cards
-            document.querySelectorAll('.card-hover').forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.classList.add('shadow-lg');
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.classList.remove('shadow-lg');
-                });
+        // Animate progress bars after a slight delay
+        setTimeout(animateProgressBars, 500);
+
+        // Add hover effect to cards
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('shadow-lg');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('shadow-lg');
             });
         });
     </script>
-    <script src="./node_modules/preline/dist/preline.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('salesCurveChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                    datasets: [{
+                        label: 'Sales',
+                        data: [112, 225, 134, 80, 200, 225, 134, 80, 200],
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.15)',
+                        fill: true,
+                        tension: 0.45, // 🔥 bikin curve / smooth
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        pointBackgroundColor: '#2563eb',
+                        pointBorderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end',
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: '#e5e7eb'
+                            },
+                            ticks: {
+                                stepSize: 50
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            /* =======================
+               BAR CHART (LEFT)
+            ======================= */
+            const barCtx = document.getElementById('salesBarChart').getContext('2d');
+
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                    datasets: [{
+                        label: 'Sales',
+                        data: [112, 225, 134, 101, 80, 225, 134, 50, 200],
+                        backgroundColor: '#2563eb',
+                        borderRadius: 6,
+                        barThickness: 22,
+                        maxBarThickness: 26
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            align: 'end',
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return ' Rp ' + context.raw.toLocaleString('id-ID');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e5e7eb'
+                            },
+                            ticks: {
+                                callback: function (value) {
+                                    return 'Rp ' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
 
     <script>
         function transactionsTable() {
@@ -457,7 +607,6 @@
             };
         }
     </script>
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </body>
 
 </html>
