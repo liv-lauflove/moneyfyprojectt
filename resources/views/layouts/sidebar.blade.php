@@ -46,21 +46,20 @@
 
                     <!-- Analytics Dropdown -->
                     <div class="space-y-1">
-                        <button
-                            class="w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-none"
-                            aria-expanded="true" aria-controls="analytics-dropdown">
+                        <div
+                            class="flex items-center px-4 py-2.5 text-sm font-medium text-white rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-none">
                             <div class="flex items-center">
                                 <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                 </svg>
-                                Transactions
+                                <x-nav-link :href="route('transaction')" :active="request()->routeIs('transaction')"
+                                    class="text-white border-b-0 border-transparent">
+                                    {{ __('Transactions') }}
+                                </x-nav-link>
                             </div>
-                            <svg class="ml-2 h-5 w-5 transform transition-transform duration-200"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            </svg>
-                        </button>
+                        </div>
                     </div>
 
                     <!-- Team Dropdown -->

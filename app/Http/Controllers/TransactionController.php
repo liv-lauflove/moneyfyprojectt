@@ -2,65 +2,106 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Transaction;
-use App\Http\Requests\StoreTransactionRequest;
-use App\Http\Requests\UpdateTransactionRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class TransactionController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * GET: /transactions/type/{type}
      */
-    public function index()
+    public function byType($type)
     {
-        //
+        $tipe = $type === 'income' ? 'pemasukan' : 'pengeluaran';
+
+        $data = Transaction::with('category')
+            ->where('id_user', Auth::id())
+            ->whereHas('category', fn($q) => $q->where('tipe', $tipe))
+            ->orderBy('tanggal_transaksi', 'desc')
+            ->get()
+            ->map(fn($t) => [
+                'id' => $t->id,
+                'date' => Carbon::parse($t->tanggal_transaksi)->toDateString(),
+                'category' => $t->category->nama_kategori,
+                'notes' => $t->catatan,
+                'amount' => $t->jumlah_transaksi,
+            ]);
+
+        return response()->json($data);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * POST: /transactions
      */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'type' => 'required|in:income,expense',
+            'category' => 'required|string',
+            'date' => 'required|date',
+            'amount' => 'required|numeric',
+        ]);
+
+        $tipe = $request->type === 'income' ? 'pemasukan' : 'pengeluaran';
+
+        // cari / buat kategori
+        $kategori = Category::firstOrCreate(
+            [
+                'id_user' => Auth::id(),
+                'nama_kategori' => $request->category,
+                'tipe' => $tipe
+            ]
+        );
+
+        Transaction::create([
+            'id_user' => Auth::id(),
+            'id_kategori' => $kategori->id,
+            'tanggal_transaksi' => $request->date,
+            'jumlah_transaksi' => $request->amount,
+            'catatan' => $request->notes,
+            'saldo_sebelumnya' => 0 // bisa kamu kembangkan nanti
+        ]);
+
+        return response()->json(['message' => 'success']);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * PUT: /transactions/{id}
      */
-    public function store(StoreTransactionRequest $request)
+    public function update(Request $request, $id)
     {
-        //
+        $transaksi = Transaction::where('id_user', Auth::id())->findOrFail($id);
+
+        $kategori = Category::firstOrCreate(
+            [
+                'id_user' => Auth::id(),
+                'nama_kategori' => $request->category,
+                'tipe' => $request->type === 'income' ? 'pemasukan' : 'pengeluaran'
+            ]
+        );
+
+        $transaksi->update([
+            'id_kategori' => $kategori->id,
+            'tanggal_transaksi' => $request->date,
+            'jumlah_transaksi' => $request->amount,
+            'catatan' => $request->notes
+        ]);
+
+        return response()->json(['message' => 'updated']);
     }
 
     /**
-     * Display the specified resource.
+     * DELETE: /transactions/{id}
      */
-    public function show(Transaction $transaction)
+    public function destroy($id)
     {
-        //
-    }
+        Transaction::where('id_user', Auth::id())
+            ->where('id', $id)
+            ->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTransactionRequest $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
+        return response()->json(['message' => 'deleted']);
     }
 }
