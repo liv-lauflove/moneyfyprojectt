@@ -33,12 +33,9 @@
                         <!-- Earnings Card with counter animation -->
                         <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-6 text-white mb-8 shadow-lg transform transition duration-500 hover:scale-[1.01] card-hover animate-fadeIn"
                             style="animation-delay: 0.2s">
-                            <h2 class="text-lg font-medium mb-1">Saldo Sekarang</h2>
+                            <h2 class="text-lg font-medium mb-1">Current Balance</h2>
                             <p class="text-3xl font-bold mb-4"> Rp {{ number_format($saldo, 0, ',', '.') }}</p>
                             <div class="flex justify-between items-center">
-                                <span class="text-indigo-100">IDX changes on profit</span>
-                                <span
-                                    class="bg-white text-indigo-600 px-3 py-1 rounded-full text-sm font-medium transform transition duration-300 hover:scale-110">+3.2%</span>
                             </div>
                         </div>
 

@@ -34,6 +34,11 @@
                             Features
                         </a>
 
+                        <a href="#" onclick="event.preventDefault(); scrollToSection('stats')"
+                            class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900">
+                            About us
+                        </a>
+
                         <a href="#" onclick="event.preventDefault(); scrollToSection('review')"
                             class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900">
                             Review
@@ -41,7 +46,7 @@
                     </div>
                     <div class="flex items-center justify-end gap-3">
                         <a class="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
-                            href="/register">Sign in</a>
+                            href="/register">Sign up</a>
                         <a class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                             href="/login">Login</a>
                     </div>
@@ -63,7 +68,7 @@
                             <span class="block xl:inline">your money today.</span>
                         </h1>
                         <p class="mx-auto text-base text-white sm:max-w-md lg:text-xl md:max-w-3xl">Track every
-                            income and expense. Monefy makes it simple to see where your money goes and build better
+                            income and expense. Moneyfy makes it simple to see where your money goes and build better
                             financial habits.</p>
                         <div class="relative flex flex-col sm:flex-row sm:space-x-4">
                             <a href="/login"
@@ -75,10 +80,6 @@
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>
                                 </svg>
-                            </a>
-                            <a href="#_"
-                                class="flex items-center px-6 py-3 text-black bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-600">
-                                Learn More
                             </a>
                         </div>
                     </div>
@@ -147,8 +148,8 @@
                     </div>
                     <div class="text-center">
                         <h3 class="text-2xl md:text-3xl font-semibold text-gray-900">
-                            Monitor where<br />
-                            money goes
+                            See your money clearly<br />
+                            & Decide smarter
                         </h3>
                         <p class="text-black mt-2 text-sm">
                             See clear charts and summaries to make smarter <br /> financial decisions.
@@ -160,7 +161,7 @@
     </section>
 
     <!-- STATS SECTION -->
-    <section>
+    <section id="stats">
         <div class="px-10 md:px-24 py-20 bg-[#013374]">
             <div class="max-w-7xl mx-auto">
                 <div class="flex flex-col md:flex-row md:items-start md:justify-between">
@@ -168,7 +169,7 @@
                         Numbers that speak<br />for themselves
                     </h2>
                     <p class="mt-1 md:mt-0 text-[14px] md:text-[16px] leading-snug text-white/80 md:w-1/2 text-left">
-                        Thousands of users trust Monefy to manage their money. See <br />
+                        Thousands of users trust Moneyfy to manage their money. See <br />
                         what our community has accomplished together.
                     </p>
                 </div>
@@ -345,15 +346,15 @@
                 <h3 class="text-2xl font-semibold text-white">Moneyfy</h3>
                 <div class="space-y-1 text-sm">
                     <p class="font-semibold text-slate-100">Address</p>
-                    <p class="text-slate-300">Level 1, 12 Sample St, Sydney NSW 2000</p>
+                    <p class="text-slate-300">Jl. Watheowik no.111, Denpasar, Bali</p>
                 </div>
 
 
                 <div class="space-y-1 text-sm">
                     <p class="font-semibold text-slate-100">Contact</p>
-                    <a href="tel:18001234567" class="block text-slate-300 hover:text-white">1800 123 4567</a>
-                    <a href="mailto:support@financetracker.com" class="block text-slate-300 hover:text-white">
-                        support@financetracker.com
+                    <a href="tel:082339393859" class="block text-slate-300 hover:text-white">0823 3939 3859</a>
+                    <a href="mailto:olyviaaudydj@gmail.com" class="block text-slate-300 hover:text-white">
+                        support@moneyfy.com
                     </a>
                 </div>
 
@@ -481,7 +482,7 @@
         <!-- bottom footer -->
         <div
             class="max-w-6xl mx-auto px-8 py-4 -translate-y-8 flex items-center justify-between text-xs text-slate-300">
-            <p class="mb-3 md:mb-0 -translate-x-8">© 2025 Finance Tracker. All rights reserved.</p>
+            <p class="mb-3 md:mb-0 -translate-x-8">© 2025 Moneyfy. All rights reserved.</p>
 
             <div class="flex gap-6 translate-x-8">
                 <a href="/#" class="hover:text-white">Privacy policy</a>
