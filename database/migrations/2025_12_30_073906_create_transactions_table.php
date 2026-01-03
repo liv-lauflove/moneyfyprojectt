@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->foreignId('id_kategori')->constrained('categories')->onDelete('cascade');
-            $table->dateTime('tanggal_transaksi');
+            $table->date('tanggal_transaksi');
             $table->integer('jumlah_transaksi');
             $table->text('catatan')->nullable();
             $table->integer('saldo_sebelumnya');
@@ -27,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaksis');
+        Schema::dropIfExists('transactions');
     }
 };

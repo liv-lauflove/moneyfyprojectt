@@ -9,50 +9,6 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-fadeIn {
-            animation: fadeIn 0.6s ease-out forwards;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        .progress-bar {
-            transition: width 1.5s ease-in-out;
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
-            }
-
-            70% {
-                box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -88,14 +44,14 @@
 
                         <!-- Stats Grid with staggered animations -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                            <!-- Sales Card -->
+                            <!-- Today's Income Card -->
                             <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 transform transition duration-500 hover:scale-[1.02] card-hover animate-fadeIn"
                                 style="animation-delay: 0.3s">
-                                <h3 class="text-lg font-medium text-gray-700 mb-4">Sales Per Day</h3>
+                                <h3 class="text-lg font-medium text-gray-700 mb-4">Today's Income</h3>
                                 <div class="flex justify-between items-end">
                                     <div>
-                                        <p class="text-2xl font-bold text-gray-800" id="sales-percent">0%</p>
-                                        <p class="text-green-500 text-sm font-medium">+1.2% from yesterday</p>
+                                        <p class="text-2xl font-bold text-gray-800" id="sales-percent">Rp0</p>
+                                        <p class="text-green-500 text-sm font-medium">Your income today</p>
                                     </div>
                                     <div
                                         class="bg-green-100 p-3 rounded-lg transform transition duration-500 hover:rotate-12">
@@ -104,14 +60,14 @@
                                 </div>
                             </div>
 
-                            <!-- Revenue Card -->
+                            <!-- Today's Expenses Card -->
                             <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 transform transition duration-500 hover:scale-[1.02] card-hover animate-fadeIn"
                                 style="animation-delay: 0.4s">
-                                <h3 class="text-lg font-medium text-gray-700 mb-4">Revenue</h3>
+                                <h3 class="text-lg font-medium text-gray-700 mb-4">Today's Expenses</h3>
                                 <div class="flex justify-between items-end">
                                     <div>
-                                        <p class="text-2xl font-bold text-gray-800" id="revenue-counter">$0</p>
-                                        <p class="text-gray-500 text-sm">321 Today Sales</p>
+                                        <p class="text-2xl font-bold text-gray-800" id="revenue-counter">Rp0</p>
+                                        <p class="text-gray-500 text-sm">Your expenses today </p>
                                     </div>
                                     <div
                                         class="bg-blue-100 p-3 rounded-lg transform transition duration-500 hover:rotate-12">
@@ -140,10 +96,10 @@
                                     </svg>
                                 </div>
                                 <div class="flex-grow flex flex-col ml-4">
-                                    <span class="text-xl font-bold">$8,430</span>
+                                    <span class="text-xl font-bold">Rp
+                                        {{ number_format($totalIncome30Days, 0, ',', '.') }}</span>
                                     <div class="flex items-center justify-between">
-                                        <span class="text-gray-500">Revenue last 30 days</span>
-                                        <span class="text-green-500 text-sm font-semibold ml-2">+12.6%</span>
+                                        <span class="text-gray-500">Last 30 days income</span>
                                     </div>
                                 </div>
                             </div>
@@ -160,10 +116,10 @@
                                     </svg>
                                 </div>
                                 <div class="flex-grow flex flex-col ml-4">
-                                    <span class="text-xl font-bold">211</span>
+                                    <span class="text-xl font-bold">Rp
+                                        {{ number_format($totalExpense30Days, 0, ',', '.') }}</span>
                                     <div class="flex items-center justify-between">
-                                        <span class="text-gray-500">Sales last 30 days</span>
-                                        <span class="text-red-500 text-sm font-semibold ml-2">-8.1%</span>
+                                        <span class="text-gray-500">Last last 30 days expense</span>
                                     </div>
                                 </div>
                             </div>
@@ -180,10 +136,9 @@
                                     </svg>
                                 </div>
                                 <div class="flex-grow flex flex-col ml-4">
-                                    <span class="text-xl font-bold">140</span>
+                                    <span class="text-xl font-bold">{{ $totalTransaction }}</span>
                                     <div class="flex items-center justify-between">
-                                        <span class="text-gray-500">Customers last 30 days</span>
-                                        <span class="text-green-500 text-sm font-semibold ml-2">+28.4%</span>
+                                        <span class="text-gray-500">Last 30 days transactions</span>
                                     </div>
                                 </div>
                             </div>
@@ -197,134 +152,93 @@
                         <!-- BAR CHART (KIRI) -->
                         <div class="bg-white rounded-xl p-6 shadow-sm h-[420px] flex flex-col">
                             <h3 class="text-lg font-semibold text-gray-700 mb-1">
-                                Product Sales
+                                Income Charts
                             </h3>
                             <p class="text-sm text-gray-400 mb-4">
-                                Monthly Average
+                                Monthly Overview
                             </p>
 
                             <div class="flex-1 relative">
-                                <canvas id="salesBarChart"></canvas>
+                                <canvas id="incomeChart"></canvas>
                             </div>
                         </div>
 
-                        <!-- CURVE CHART (KANAN) -->
+                        <!-- CURVE CHART (KANAN - INCOME vs EXPENSE) -->
                         <div class="bg-white rounded-xl p-6 shadow-sm h-[420px] flex flex-col">
                             <h3 class="text-lg font-semibold text-gray-700 mb-1">
-                                Product Sales
+                                Income vs Expense
                             </h3>
                             <p class="text-sm text-gray-400 mb-4">
-                                Monthly Average
+                                Monthly Overview
                             </p>
 
                             <div class="flex-1 relative">
-                                <canvas id="salesCurveChart"></canvas>
+                                <canvas id="incomeExpenseChart"></canvas>
                             </div>
                         </div>
-
                     </div>
                 </section>
 
                 <section>
-                    <div class="col-span-12 rounded-2xl border border-gray-200 bg-white pt-4"
-                        x-data="transactionsTable()">
+                    <div class="col-span-12 rounded-2xl border border-gray-200 bg-white pt-4 mt-10">
 
-                        <!-- Header -->
-                        <div class="flex items-center justify-between px-6 mb-4">
+                        <div class="px-6 mb-4">
                             <h3 class="text-lg font-semibold text-gray-800">
                                 Latest Transactions
                             </h3>
-
-                            <input type="text" x-model="searchQuery" placeholder="Search..."
-                                class="h-[42px] rounded-lg border px-4 text-sm" />
                         </div>
 
-                        <!-- Table -->
                         <div class="overflow-x-auto px-6">
                             <table class="min-w-full">
                                 <thead>
-                                    <tr class="border-y">
-                                        <th class="py-3 text-left">Name</th>
+                                    <tr class="border-y text-gray-600">
                                         <th class="py-3 text-left">Date</th>
-                                        <th class="py-3 text-left">Price</th>
                                         <th class="py-3 text-left">Category</th>
-                                        <th class="py-3 text-left">Status</th>
-                                        <th></th>
+                                        <th class="py-3 text-left">Note</th>
+                                        <th class="py-3 text-left">Amount</th>
                                     </tr>
                                 </thead>
 
                                 <tbody class="divide-y">
-                                    <template x-for="(item, index) in paginatedData" :key="index">
+                                    @forelse ($tableAllTransactions as $item)
                                         <tr>
                                             <td class="py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <span x-text="item.name"></span>
-                                                </div>
+                                                {{ $item->tanggal_transaksi->format('d M Y') }}
                                             </td>
-
-                                            <td x-text="item.date"></td>
-                                            <td x-text="item.price"></td>
-                                            <td x-text="item.category"></td>
 
                                             <td>
-                                                <span x-text="item.status" class="px-2 py-1 rounded-full text-xs"
-                                                    :class="{
-                                    'bg-green-100 text-green-600': item.status === 'Success',
-                                    'bg-yellow-100 text-yellow-600': item.status === 'Pending',
-                                    'bg-red-100 text-red-600': item.status === 'Failed'
-                                }"></span>
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-xs font-semibold
+                                                    {{ $item->category->tipe === 'pemasukan'
+                                                        ? 'bg-green-100 text-green-700'
+                                                        : 'bg-red-100 text-red-700' }}">
+                                                    {{ $item->category->nama_kategori }}
+                                                </span>
                                             </td>
 
-                                            <!-- ACTION DROPDOWN -->
-                                            <td class="py-4 text-right">
-                                                <div class="relative inline-block" x-data="{ open: false }"
-                                                    @click.away="open = false">
-
-                                                    <!-- Button -->
-                                                    <button @click="open = !open"
-                                                        class="p-2 rounded-full hover:bg-gray-100">
-                                                        <svg width="20" height="20" fill="currentColor"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M6 12a2 2 0 110-4 2 2 0 010 4zm6 0a2 2 0 110-4 2 2 0 010 4zm6 0a2 2 0 110-4 2 2 0 010 4z" />
-                                                        </svg>
-                                                    </button>
-
-                                                    <!-- Dropdown -->
-                                                    <div x-show="open" x-transition x-cloak
-                                                        class="absolute right-0 mt-2 w-40 rounded-xl border bg-white shadow-lg z-[9999]">
-
-                                                        <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">
-                                                            Edit
-                                                        </a>
-
-                                                        <a href="#"
-                                                            class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                                                            Delete
-                                                        </a>
-                                                    </div>
-                                                </div>
+                                            <td>
+                                                {{ $item->catatan ?? '-' }}
                                             </td>
 
+                                            <td
+                                                class="font-semibold
+                                                {{ $item->category->tipe === 'pemasukan'
+                                                    ? 'text-green-600'
+                                                    : 'text-red-600' }}">
+                                                {{ $item->category->tipe === 'pemasukan' ? '+' : '-' }}
+                                                {{ number_format($item->jumlah_transaksi, 0, ',', '.') }}
+                                            </td>
                                         </tr>
-                                    </template>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="py-6 text-center text-gray-500">
+                                                Belum ada transaksi
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
-
-                        <!-- Pagination -->
-                        <div class="flex justify-between px-6 py-4 border-t">
-                            <button @click="prevPage" :disabled="currentPage === 1">
-                                Previous
-                            </button>
-
-                            <span x-text="`Page ${currentPage} of ${totalPages}`"></span>
-
-                            <button @click="nextPage" :disabled="currentPage === totalPages">
-                                Next
-                            </button>
-                        </div>
-                    </div>
                 </section>
             </div>
         </main>
@@ -344,7 +258,7 @@
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
                 const value = Math.floor(progress * (end - start) + start);
-                obj.innerHTML = prefix + value.toLocaleString() + (id === 'earnings-counter' || id === 'revenue-counter' ? '' : '%');
+                obj.innerHTML = prefix + value.toLocaleString() + (id === 'earnings-counter' || id === 'revenue-counter' ? '' : '');
                 if (progress < 1) {
                     window.requestAnimationFrame(step);
                 }
@@ -374,8 +288,8 @@
 
             animateValue('earnings-counter', 0, saldo, 2000, 'Rp ');
         });
-        animateValue('revenue-counter', 0, 4230, 1500, 'Rp');
-        animateValue('sales-percent', 0, 3, 1000);
+        animateValue('revenue-counter', 0, {{ $todayExpense }}, 1500, 'Rp');
+        animateValue('sales-percent', 0, {{ $todayIncome }}, 1000, 'Rp');
 
         // Animate progress bars after a slight delay
         setTimeout(animateProgressBars, 500);
@@ -392,220 +306,89 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const ctx = document.getElementById('salesCurveChart').getContext('2d');
+        const incomeData = @json($incomeData);
+        const expenseData = @json($expenseData);
 
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-                    datasets: [{
-                        label: 'Sales',
-                        data: [112, 225, 134, 80, 200, 225, 134, 80, 200],
-                        borderColor: '#2563eb',
-                        backgroundColor: 'rgba(37, 99, 235, 0.15)',
-                        fill: true,
-                        tension: 0.45, // 🔥 bikin curve / smooth
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
-                        pointBackgroundColor: '#2563eb',
-                        pointBorderWidth: 0
-                    }]
+        const labels = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+    </script>
+
+    <!-- chart kiri -->
+    <canvas id="incomeChart"></canvas>
+
+    <script>
+        const incomeCtx = document.getElementById('incomeChart');
+
+        new Chart(incomeCtx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Income',
+                    data: incomeData,
+                    backgroundColor: '#2563eb',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            align: 'end',
-                            labels: {
-                                usePointStyle: true,
-                                pointStyle: 'circle'
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: '#e5e7eb'
-                            },
-                            ticks: {
-                                stepSize: 50
-                            }
-                        }
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
+            }
         });
     </script>
 
+    <!-- chart kanan -->
+    <canvas id="incomeExpenseChart"></canvas>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        const ctx = document.getElementById('incomeExpenseChart');
 
-            /* =======================
-               BAR CHART (LEFT)
-            ======================= */
-            const barCtx = document.getElementById('salesBarChart').getContext('2d');
-
-            new Chart(barCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-                    datasets: [{
-                        label: 'Sales',
-                        data: [112, 225, 134, 101, 80, 225, 134, 50, 200],
-                        backgroundColor: '#2563eb',
-                        borderRadius: 6,
-                        barThickness: 22,
-                        maxBarThickness: 26
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            align: 'end',
-                            labels: {
-                                usePointStyle: true,
-                                pointStyle: 'circle'
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    return ' Rp ' + context.raw.toLocaleString('id-ID');
-                                }
-                            }
-                        }
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Income',
+                        data: incomeData,
+                        borderColor: '#16a34a',
+                        backgroundColor: 'rgba(22,163,74,0.15)',
+                        tension: 0.4,
+                        fill: true
                     },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: '#e5e7eb'
-                            },
-                            ticks: {
-                                callback: function (value) {
-                                    return 'Rp ' + value;
-                                }
-                            }
-                        }
+                    {
+                        label: 'Expense',
+                        data: expenseData,
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220,38,38,0.15)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
-
+            }
         });
-    </script>
-
-    <script>
-        function transactionsTable() {
-            return {
-                tableData: [
-                    {
-                        name: "Bought PYPL",
-                        date: "Nov 23, 01:00 PM",
-                        price: "$2,567.88",
-                        category: "Finance",
-                        status: "Success",
-                    },
-                    {
-                        name: "Bought AAPL",
-                        date: "Nov 22, 09:00 PM",
-                        price: "$3,987.45",
-                        category: "Technology",
-                        status: "Pending",
-                    },
-                    {
-                        name: "Sell AMZN",
-                        date: "Feb 35, 08:00 PM",
-                        price: "$5,698.55",
-                        category: "E-commerce",
-                        status: "Failed",
-                    },
-                ],
-
-                itemsPerPage: 5,
-                currentPage: 1,
-                searchQuery: "",
-
-                get filteredData() {
-                    if (!this.searchQuery) return this.tableData;
-                    return this.tableData.filter(item =>
-                        item.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                        item.category.toLowerCase().includes(this.searchQuery.toLowerCase())
-                    );
-                },
-
-                get totalPages() {
-                    return Math.ceil(this.filteredData.length / this.itemsPerPage);
-                },
-
-                get paginatedData() {
-                    const start = (this.currentPage - 1) * this.itemsPerPage;
-                    return this.filteredData.slice(start, start + this.itemsPerPage);
-                },
-
-                prevPage() {
-                    if (this.currentPage > 1) this.currentPage--;
-                },
-
-                nextPage() {
-                    if (this.currentPage < this.totalPages) this.currentPage++;
-                },
-
-                init() {
-                    this.$watch("searchQuery", () => {
-                        this.currentPage = 1;
-                    });
-                },
-            };
-        }
-
-        /* 🔽 DROPDOWN ACTION COMPONENT */
-        function actionDropdown() {
-            return {
-                isOpen: false,
-                popperInstance: null,
-
-                init() {
-                    this.$nextTick(() => {
-                        this.popperInstance = createPopper(
-                            this.$refs.button,
-                            this.$refs.content,
-                            {
-                                placement: 'bottom-end',
-                                strategy: 'fixed',
-                                modifiers: [
-                                    {
-                                        name: 'offset',
-                                        options: { offset: [0, 4] },
-                                    },
-                                ],
-                            }
-                        );
-                    });
-                },
-
-                toggle() {
-                    this.isOpen = !this.isOpen;
-                    this.popperInstance && this.popperInstance.update();
-                },
-            };
-        }
     </script>
 </body>
 
