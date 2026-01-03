@@ -111,7 +111,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div class="group">
                     <div class="relative overflow-hidden rounded-xl mb-4">
-                        <img src="{{ asset('assets/images/img-1.JPG') }}" alt="Record your income and expenses"
+                        <img src="{{ asset('assets/images/gambar1.JPEG') }}" alt="Record your income and expenses"
                             class="w-full h-48 object-cover object-center rounded-xl" />
                     </div>
                     <div class="text-center">
@@ -127,7 +127,7 @@
 
                 <div class="group">
                     <div class="relative overflow-hidden rounded-xl mb-4">
-                        <img src="{{ asset('assets/images/img-2.jpg') }}" alt="Monitor where money goes"
+                        <img src="{{ asset('assets/images/gambar2.jpeg') }}" alt="Monitor where money goes"
                             class="w-full h-48 object-cover object-center rounded-xl" />
                     </div>
                     <div class="text-center">
@@ -143,7 +143,7 @@
 
                 <div class="group">
                     <div class="relative overflow-hidden rounded-xl mb-4">
-                        <img src="{{ asset('assets/images/img-3.jpg') }}" alt="Visualize your financial progress"
+                        <img src="{{ asset('assets/images/gambar3.jpeg') }}" alt="Visualize your financial progress"
                             class="w-full h-48 object-cover object-center rounded-xl" />
                     </div>
                     <div class="text-center">
