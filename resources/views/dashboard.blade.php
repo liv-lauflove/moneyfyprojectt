@@ -25,7 +25,7 @@
                             style="animation-delay: 0.1s">
                             <h1 class="text-3xl font-bold text-indigo-700 transform transition duration-500">
                                 <div>
-                                    <h1>Hallo, {{ Auth::user()->name }}</h1>
+                                    <h1>Hello, {{ Auth::user()->name }}</h1>
                                 </div>
                             </h1>
                         </header>
