@@ -41,10 +41,10 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) { //lakukan query, verufy pass, klu  cocok create session, klu ndak return false
             RateLimiter::hit($this->throttleKey());
 
-            throw ValidationException::withMessages([
+            throw ValidationException::withMessages([ //jika return false, lempar error validasi
                 'email' => trans('auth.failed'),
             ]);
         }

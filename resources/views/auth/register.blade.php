@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <title>Register</title>
 
-    {{-- Vite --}}
+    <!-- blade directive laravel, panggil css n js, brisi tailwind, dikelola vite -->
+    {{-- Vite --}} 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -22,15 +23,15 @@
     <div class="bg-[#112250] text-white rounded-3xl shadow-2xl border border-blue-100 p-8">
         <h2 class="text-2xl font-semibold mb-6 text-center">Sign Up</h2>
 
-        <form method="POST" action="{{ route('register') }}" class="space-y-5">
-            @csrf
+        <form method="POST" action="{{ route('register') }}" class="space-y-5"> <!-- kirim data pake post, kirim ke route register laravel-->
+            @csrf <!--wajib di laravel, utk proteksi keamanan, tanpa ini nnti ada eror 419 page expired-->
 
             {{-- Name (gabung first + last) --}}
             <div>
                 <label class="block text-sm font-semibold mb-1">Full Name</label>
                 <input
                     type="text"
-                    name="name"
+                    name="name" 
                     value="{{ old('name') }}"
                     required
                     class="w-full p-3 rounded-2xl bg-white/10 border border-white/30
