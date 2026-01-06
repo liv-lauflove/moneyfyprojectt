@@ -122,7 +122,7 @@
                     </div>
                 </div>
 
-                <div id="expense-tab" class="tab-content hidden">
+                <div id="expense-tab" class="tab-content">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div class="col-span-2 space-y-6">
                             <div class="flex flex-col md:flex-row gap-4">
@@ -215,293 +215,159 @@
     </div>
 
     <script>
-        // --- KONFIGURASI UMUM ---
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrf = document.querySelector('meta[name="csrf-token"]').content;
+    
+    let incomeChart = null;
+    let expenseChart = null;
 
-        // Tab switching logic
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', function () {
-                tabBtns.forEach(b => {
-                    b.classList.remove('border-blue-900', 'text-gray-800');
-                    b.classList.add('border-transparent', 'text-gray-500');
-                });
-                tabContents.forEach(content => content.classList.add('hidden'));
-                this.classList.remove('border-transparent', 'text-gray-500');
-                this.classList.add('border-blue-900', 'text-gray-800');
-                document.getElementById(this.dataset.tab + '-tab').classList.remove('hidden');
-            });
+/* ================= TAB ================= */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('border-blue-900','text-gray-800');
+            b.classList.add('border-transparent','text-gray-500');
         });
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
 
-        // --- GLOBAL VARIABLES (State from DB) ---
-        let incomeTransactions = [];
-        let expenseTransactions = [];
-        let incomeChart = null;
-        let expenseChart = null;
+        btn.classList.add('border-blue-900','text-gray-800');
+        document.getElementById(btn.dataset.tab + '-tab').classList.remove('hidden');
+    });
+});
 
-        document.getElementById('incomeDate').valueAsDate = new Date();
-        document.getElementById('expenseDate').valueAsDate = new Date();
+/* ================= LOAD DATA ================= */
+async function load(type, params = '') {
+    const res = await fetch(`/transactions/data/${type}?${params}`);
+    const data = await res.json();
 
-        // --- HELPER FUNCTIONS (API CALLS) ---
+    renderTable(type, data.transactions);
+    renderTotal(type, data.total);
+    renderChart(type, data.chart);
+}
 
-        // 1. Fetch Data dari Database
-        async function fetchTransactions(type) {
-            try {
-                const response = await fetch(`/transactions/type/${type}`);
-                const data = await response.json();
-                if (type === 'income') {
-                    incomeTransactions = data;
-                    renderIncomeTransactions();
-                    updateIncomeChart();
-                } else {
-                    expenseTransactions = data;
-                    renderExpenseTransactions();
-                    updateExpenseChart();
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
+/* ================= RENDER ================= */
+function renderTable(type, rows) {
+    const tbody = document.getElementById(type + 'TableBody');
 
+    tbody.innerHTML = rows.length
+        ? rows.map(t => `
+            <tr class="border-b hover:bg-gray-50">
+                <td class="px-4 py-3">${new Date(t.date).toLocaleDateString('id-ID')}</td>
+                <td class="px-4 py-3">${t.category}</td>
+                <td class="px-4 py-3">${t.notes ?? '-'}</td>
+                <td class="px-4 py-3 font-semibold">
+                    Rp ${Number(t.amount).toLocaleString('id-ID')}
+                </td>
+                <td class="px-4 py-3 flex gap-2">
+                    <button onclick="edit('${type}', ${t.id})"
+                        class="px-3 py-1 bg-blue-500 text-white rounded text-xs">EDIT</button>
+                    <button onclick="removeTx(${t.id}, '${type}')"
+                        class="px-3 py-1 bg-red-500 text-white rounded text-xs">DELETE</button>
+                </td>
+            </tr>
+        `).join('')
+        : `<tr><td colspan="5" class="py-6 text-center text-gray-400">No data</td></tr>`;
+}
 
-        // 2. Save/Update Data ke Database
-        async function saveTransaction(type, id = null) {
-            const url = id ? `/transactions/${id}` : '/transactions';
-            const method = id ? 'PUT' : 'POST';
+function renderTotal(type, total) {
+    document.getElementById(type === 'income' ? 'totalIncome' : 'totalExpense')
+        .innerText = `Rp ${total.toLocaleString('id-ID')}`;
+}
 
-            const prefix = type; // 'income' or 'expense'
-            const payload = {
-                type: type,
-                date: document.getElementById(`${prefix}Date`).value,
-                category: document.getElementById(`${prefix}Category`).value,
-                notes: document.getElementById(`${prefix}Notes`).value,
-                amount: document.getElementById(`${prefix}Amount`).value
-            };
+function renderChart(type, chartData) {
+    const ctx = document.getElementById(type + 'Chart');
+    const chartRef = type === 'income' ? incomeChart : expenseChart;
+    if (chartRef) chartRef.destroy();
 
-            try {
-                const response = await fetch(url, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify(payload)
-                });
+    const chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(chartData),
+            datasets: [{
+                data: Object.values(chartData),
+                backgroundColor: ['#4CAF50','#FFC107','#03A9F4','#E91E63','#9C27B0']
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
 
-                if (response.ok) {
-                    // Refresh data setelah save sukses
-                    resetForm(type);
-                    fetchTransactions(type);
-                } else {
-                    alert('Failed to save transaction');
-                }
-            } catch (error) {
-                console.error('Error saving:', error);
-            }
-        }
+    type === 'income' ? incomeChart = chart : expenseChart = chart;
+}
 
-        // 3. Delete Data dari Database
-        async function deleteTransaction(id, type) {
-            if (!confirm('Are you sure?')) return;
+/* ================= SUBMIT ================= */
+async function submitForm(type) {
+    const prefix = type;
+    const id = document.getElementById(prefix + 'Id').value;
 
-            try {
-                const response = await fetch(`/transactions/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    }
-                });
+    const payload = {
+        type,
+        date: document.getElementById(prefix + 'Date').value,
+        category: document.getElementById(prefix + 'Category').value,
+        notes: document.getElementById(prefix + 'Notes').value,
+        amount: document.getElementById(prefix + 'Amount').value
+    };
 
-                if (response.ok) {
-                    fetchTransactions(type); // Refresh data
-                }
-            } catch (error) {
-                console.error('Error deleting:', error);
-            }
-        }
+    await fetch(id ? `/transactions/${id}` : '/transactions', {
+        method: id ? 'PUT' : 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrf
+        },
+        body: JSON.stringify(payload)
+    });
 
-        // --- EVENT LISTENERS & LOGIC ---
+    document.getElementById(prefix + 'Form').reset();
+    document.getElementById(prefix + 'Id').value = '';
+    load(type);
+}
 
-        // INCOME FORM SUBMIT
-        document.getElementById('incomeForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const id = document.getElementById('incomeId').value;
-            saveTransaction('income', id ? id : null);
+/* ================= DELETE ================= */
+async function removeTx(id, type) {
+    if (!confirm('Delete transaction?')) return;
+
+    await fetch(`/transactions/${id}`, {
+        method: 'DELETE',
+        headers: { 'X-CSRF-TOKEN': csrf }
+    });
+
+    load(type);
+}
+
+/* ================= EDIT ================= */
+async function edit(type, id) {
+    const res = await fetch(`/transactions/data/${type}`);
+    const data = await res.json();
+    const t = data.transactions.find(x => x.id === id);
+
+    document.getElementById(type + 'Id').value = t.id;
+    document.getElementById(type + 'Date').value = t.date;
+    document.getElementById(type + 'Category').value = t.category;
+    document.getElementById(type + 'Notes').value = t.notes;
+    document.getElementById(type + 'Amount').value = t.amount;
+}
+
+/* ================= FILTER ================= */
+['Income','Expense'].forEach(type => {
+    ['search','startDate','endDate'].forEach(f => {
+        document.getElementById(f + type)?.addEventListener('input', () => {
+            const q = new URLSearchParams({
+                search: document.getElementById('search' + type).value,
+                start_date: document.getElementById('startDate' + type).value,
+                end_date: document.getElementById('endDate' + type).value
+            });
+            load(type.toLowerCase(), q.toString());
         });
+    });
+});
 
-        // EXPENSE FORM SUBMIT
-        document.getElementById('expenseForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const id = document.getElementById('expenseId').value;
-            saveTransaction('expense', id ? id : null);
-        });
+/* ================= INIT ================= */
+document.getElementById('incomeForm').onsubmit = e => {
+    e.preventDefault(); submitForm('income');
+};
+document.getElementById('expenseForm').onsubmit = e => {
+    e.preventDefault(); submitForm('expense');
+};
 
-        // RENDER FUNCTIONS (Diadaptasi untuk array dari DB)
-        function renderIncomeTransactions() {
-            const tbody = document.getElementById('incomeTableBody');
-            const searchTerm = document.getElementById('searchIncome').value.toLowerCase();
-            const startDateVal = document.getElementById('startDateIncome').value;
-            const endDateVal = document.getElementById('endDateIncome').value;
-
-            // Filter Client-side (Data sudah diload semua dari DB, filter tampilan saja)
-            let filtered = incomeTransactions.filter(t => {
-                const transactionDate = new Date(t.date);
-                const searchMatch = t.category.toLowerCase().includes(searchTerm) || (t.notes && t.notes.toLowerCase().includes(searchTerm));
-                let dateMatch = true;
-                if (startDateVal) dateMatch = dateMatch && (transactionDate >= new Date(startDateVal));
-                if (endDateVal) dateMatch = dateMatch && (transactionDate <= new Date(endDateVal));
-                return searchMatch && dateMatch;
-            });
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">No transactions found</td></tr>';
-                document.getElementById('totalIncome').textContent = 'Rp 0';
-                return;
-            }
-
-            tbody.innerHTML = filtered.map(t => `
-                <tr class="border-b border-gray-200 hover:bg-gray-50">
-                    <td class="px-4 py-3">${new Date(t.date).toLocaleDateString('id-ID')}</td>
-                    <td class="px-4 py-3"><span class="px-2 py-1 bg-teal-100 text-teal-700 rounded text-xs font-medium">${t.category}</span></td>
-                    <td class="px-4 py-3">${t.notes || '-'}</td>
-                    <td class="px-4 py-3 font-semibold text-teal-600">Rp ${parseInt(t.amount).toLocaleString('id-ID')}</td>
-                    <td class="px-4 py-3 flex gap-2">
-                        <button onclick="editTransaction('income', ${t.id})" class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs font-medium">EDIT</button>
-                        <button onclick="deleteTransaction(${t.id}, 'income')" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs font-medium">DELETE</button>
-                    </td>
-                </tr>
-            `).join('');
-
-            const total = filtered.reduce((sum, t) => sum + parseFloat(t.amount), 0);
-            document.getElementById('totalIncome').textContent = `Rp ${total.toLocaleString('id-ID')}`;
-        }
-
-        function renderExpenseTransactions() {
-            const tbody = document.getElementById('expenseTableBody');
-            const searchTerm = document.getElementById('searchExpense').value.toLowerCase();
-            const startDateVal = document.getElementById('startDateExpense').value;
-            const endDateVal = document.getElementById('endDateExpense').value;
-
-            let filtered = expenseTransactions.filter(t => {
-                const transactionDate = new Date(t.date);
-                const searchMatch = t.category.toLowerCase().includes(searchTerm) || (t.notes && t.notes.toLowerCase().includes(searchTerm));
-                let dateMatch = true;
-                if (startDateVal) dateMatch = dateMatch && (transactionDate >= new Date(startDateVal));
-                if (endDateVal) dateMatch = dateMatch && (transactionDate <= new Date(endDateVal));
-                return searchMatch && dateMatch;
-            });
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">No transactions found</td></tr>';
-                document.getElementById('totalExpense').textContent = 'Rp 0';
-                return;
-            }
-
-            tbody.innerHTML = filtered.map(t => `
-                <tr class="border-b border-gray-200 hover:bg-gray-50">
-                    <td class="px-4 py-3">${new Date(t.date).toLocaleDateString('id-ID')}</td>
-                    <td class="px-4 py-3"><span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-medium">${t.category}</span></td>
-                    <td class="px-4 py-3">${t.notes || '-'}</td>
-                    <td class="px-4 py-3 font-semibold text-red-600">Rp ${parseInt(t.amount).toLocaleString('id-ID')}</td>
-                    <td class="px-4 py-3 flex gap-2">
-                        <button onclick="editTransaction('expense', ${t.id})" class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs font-medium">EDIT</button>
-                        <button onclick="deleteTransaction(${t.id}, 'expense')" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs font-medium">DELETE</button>
-                    </td>
-                </tr>
-            `).join('');
-
-            const total = filtered.reduce((sum, t) => sum + parseFloat(t.amount), 0);
-            document.getElementById('totalExpense').textContent = `Rp ${total.toLocaleString('id-ID')}`;
-        }
-
-        // Helper untuk Edit (Populate Form)
-        function editTransaction(type, id) {
-            const list = type === 'income' ? incomeTransactions : expenseTransactions;
-            const transaction = list.find(t => t.id === id);
-
-            if (transaction) {
-                document.getElementById(`${type}Id`).value = transaction.id;
-                document.getElementById(`${type}Date`).value = transaction.date;
-                document.getElementById(`${type}Category`).value = transaction.category;
-                document.getElementById(`${type}Notes`).value = transaction.notes;
-                document.getElementById(`${type}Amount`).value = Math.floor(transaction.amount); // remove decimals for input
-
-                // Ubah teks tombol agar user tahu sedang edit
-                const btn = type === 'income' ? document.getElementById('btnSaveIncome') : document.getElementById('btnSaveExpense');
-                btn.textContent = 'Update Transaction';
-
-                document.getElementById(`${type}Date`).focus();
-            }
-        }
-
-        function resetForm(type) {
-            document.getElementById(`${type}Form`).reset();
-            document.getElementById(`${type}Id`).value = ''; // Clear ID
-            document.getElementById(`${type}Date`).valueAsDate = new Date();
-
-            // Kembalikan teks tombol
-            const btn = type === 'income' ? document.getElementById('btnSaveIncome') : document.getElementById('btnSaveExpense');
-            btn.textContent = type === 'income' ? 'Add Income' : 'Add Expense';
-        }
-
-        function updateIncomeChart() {
-            const byCategory = {};
-            incomeTransactions.forEach(t => {
-                byCategory[t.category] = (byCategory[t.category] || 0) + parseFloat(t.amount);
-            });
-            const ctx = document.getElementById('incomeChart').getContext('2d');
-            if (incomeChart) incomeChart.destroy();
-            incomeChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(byCategory).length ? Object.keys(byCategory) : ['No data'],
-                    datasets: [{
-                        data: Object.values(byCategory).length ? Object.values(byCategory) : [0],
-                        backgroundColor: ['#ff6b6b', '#ffd93d', '#6bcf7f', '#4d96ff', '#c77dff'],
-                        borderColor: 'white',
-                        borderWidth: 2
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-            });
-        }
-
-        function updateExpenseChart() {
-            const byCategory = {};
-            expenseTransactions.forEach(t => {
-                byCategory[t.category] = (byCategory[t.category] || 0) + parseFloat(t.amount);
-            });
-            const ctx = document.getElementById('expenseChart').getContext('2d');
-            if (expenseChart) expenseChart.destroy();
-            expenseChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(byCategory).length ? Object.keys(byCategory) : ['No data'],
-                    datasets: [{
-                        data: Object.values(byCategory).length ? Object.values(byCategory) : [0],
-                        backgroundColor: ['#ff6b6b', '#ffd93d', '#6bcf7f', '#4d96ff', '#c77dff'],
-                        borderColor: 'white',
-                        borderWidth: 2
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-            });
-        }
-
-        // Search Filters
-        document.getElementById('searchIncome').addEventListener('input', renderIncomeTransactions);
-        document.getElementById('startDateIncome').addEventListener('change', renderIncomeTransactions);
-        document.getElementById('endDateIncome').addEventListener('change', renderIncomeTransactions);
-
-        document.getElementById('searchExpense').addEventListener('input', renderExpenseTransactions);
-        document.getElementById('startDateExpense').addEventListener('change', renderExpenseTransactions);
-        document.getElementById('endDateExpense').addEventListener('change', renderExpenseTransactions);
-
-        // INITIAL LOAD
-        fetchTransactions('income');
-        fetchTransactions('expense');
-
-    </script>
+load('income');
+load('expense');
+</script>
 </x-app-layout>

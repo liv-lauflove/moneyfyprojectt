@@ -16,11 +16,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/transaction', function () {
-        return view('transaction');
-    })->name('transaction');
+    Route::get('/transaction', [TransactionController::class, 'index'])
+        ->name('transaction');
 
-    Route::get('/transactions/type/{type}', [TransactionController::class, 'byType']);
+    Route::get('/transactions/data/{type}', [TransactionController::class, 'data']);
+
     Route::post('/transactions', [TransactionController::class, 'store']);
     Route::put('/transactions/{id}', [TransactionController::class, 'update']);
     Route::delete('/transactions/{id}', [TransactionController::class, 'destroy']);
