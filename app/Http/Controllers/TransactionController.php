@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class TransactionController extends Controller
 {
@@ -28,7 +29,7 @@ class TransactionController extends Controller
 
         $transactions = Transaction::with('category')
             ->where('id_user', Auth::id())
-            ->whereHas('category', fn ($q) => $q->where('tipe', $tipe))
+            ->whereHas('category', fn($q) => $q->where('tipe', $tipe))
             ->when($request->search, function ($q) use ($request) {
                 $q->where(function ($sub) use ($request) {
                     $sub->where('catatan', 'like', "%{$request->search}%")
@@ -37,19 +38,23 @@ class TransactionController extends Controller
                         });
                 });
             })
-            ->when($request->start_date, fn ($q) =>
+            ->when(
+                $request->start_date,
+                fn($q) =>
                 $q->whereDate('tanggal_transaksi', '>=', $request->start_date)
             )
-            ->when($request->end_date, fn ($q) =>
+            ->when(
+                $request->end_date,
+                fn($q) =>
                 $q->whereDate('tanggal_transaksi', '<=', $request->end_date)
             )
             ->orderBy('tanggal_transaksi', 'desc')
             ->get();
 
         return response()->json([
-            'transactions' => $transactions->map(fn ($t) => [
+            'transactions' => $transactions->map(fn($t) => [
                 'id' => $t->id,
-                'date' => $t->tanggal_transaksi->toDateString(),
+                'date' => Carbon::parse($t->tanggal_transaksi)->toDateString(),
                 'category' => $t->category->nama_kategori,
                 'notes' => $t->catatan,
                 'amount' => $t->jumlah_transaksi,
@@ -57,7 +62,7 @@ class TransactionController extends Controller
             'total' => $transactions->sum('jumlah_transaksi'),
             'chart' => $transactions
                 ->groupBy('category.nama_kategori')
-                ->map(fn ($group) => $group->sum('jumlah_transaksi')),
+                ->map(fn($group) => $group->sum('jumlah_transaksi')),
         ]);
     }
 
