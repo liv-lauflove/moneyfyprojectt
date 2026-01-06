@@ -6,32 +6,33 @@
             height: 100%;
         }
     </style>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}"> <!--laravel wajib pakai CSRF token utk post, put, delete, nnti js akan ambil di bawah-->
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- panggil chart.js dari cdn -->
 
     <div class="flex h-screen w-full overflow-hidden bg-gray-100">
 
         <div class="flex-shrink-0 hidden md:flex">
-            @include('layouts.sidebar')
+            @include('layouts.sidebar') <!-- panggil sidebar dari layouts/sidebar.blade.php -->
         </div>
 
         <div class="flex-1 flex flex-col h-full md:ml-64 min-w-0">
 
             <div class="flex-shrink-0 bg-white shadow z-10 relative">
-                @include('layouts.navigation')
+                @include('layouts.navigation') 
             </div>
 
             <main class="flex-1 overflow-y-auto bg-gray-100 p-8 scroll-smooth">
 
                 <div class="flex gap-8 border-b border-gray-200 mb-8">
+                    <!-- tab income n expense -->
                     <button class="tab-btn active px-4 py-3 border-b-2 border-blue-900 font-semibold text-gray-800"
                         data-tab="income">Income</button>
-                    <button
-                        class="tab-btn px-4 py-3 border-b-2 border-transparent font-semibold text-gray-500 hover:text-gray-700"
+                    <button class="tab-btn px-4 py-3 border-b-2 border-transparent font-semibold text-gray-500 hover:text-gray-700"
                         data-tab="expense">Expense</button>
                 </div>
 
+                <!-- id: income-tab class:tab-content berhubungan dgn data-tab diatas -> id="income-tab" agar js tau tab mana yang ditampilkan -->
                 <div id="income-tab" class="tab-content">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div class="col-span-2 space-y-6">
@@ -215,41 +216,46 @@
     </div>
 
     <script>
+    //cari meta diatas tdi, ambil isinya n simpan ke variabel csrf 
     const csrf = document.querySelector('meta[name="csrf-token"]').content;
     
+    // chart state, null krn chart blm dibuat n akan diisi object chart.js, disimpan biar bisa chart.destroy() kalau engga nnti chart numpuk
     let incomeChart = null;
     let expenseChart = null;
 
-/* ================= TAB ================= */
-document.querySelectorAll('.tab-btn').forEach(btn => {
+/* ================= TAB SWITCHING ================= */
+document.querySelectorAll('.tab-btn').forEach(btn => { //ambil smua tombol tab, akan lakukan perulangn dan beri nama btn
     btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => {
-            b.classList.remove('border-blue-900','text-gray-800');
-            b.classList.add('border-transparent','text-gray-500');
+        document.querySelectorAll('.tab-btn').forEach(b => { //klu diklik, panggil lagi smua tombol tab, loop lagi akan reset tampilan semua tab(inactive)
+            b.classList.remove('border-blue-900','text-gray-800'); //hapus kelas yg bikin tombol terlihat aktif
+            b.classList.add('border-transparent','text-gray-500'); //tambahin class yg buat tombol terlihat tidak atif
         });
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden')); //tambah class hidden ke semua konten agar sembunyikan smua isi tab
 
-        btn.classList.add('border-blue-900','text-gray-800');
-        document.getElementById(btn.dataset.tab + '-tab').classList.remove('hidden');
+        btn.classList.add('border-blue-900','text-gray-800'); //tambahkan style aktif, klu tabbutton di klik
+        document.getElementById(btn.dataset.tab + '-tab').classList.remove('hidden'); //btn.dataset.. ambil nilai dari atribut html data-tab, hapus class hidden biar konten muncul
     });
 });
 
-/* ================= LOAD DATA ================= */
-async function load(type, params = '') {
-    const res = await fetch(`/transactions/data/${type}?${params}`);
-    const data = await res.json();
+/* ================= LOAD DATA DARI SERVER ================= */
+async function load(type, params = '') { //fungsi async untuk fetch transction data. params itu string kosong for filter
+    const res = await fetch(`/transactions/data/${type}?${params}`); //akan nunggu krn ada await, variabel res blm terisi smpe server ada datanya
+    // req ke controller data() then return json with transactions, total sum, chart data
+    const data = await res.json(); //ubah data mentah diatas n uabh ke json ambil response json dari controller
 
-    renderTable(type, data.transactions);
+    // render function to update UI, data json dipecah dan kirim ke fungsi tampilan
+    renderTable(type, data.transactions); //render functions to update UI
     renderTotal(type, data.total);
     renderChart(type, data.chart);
 }
 
 /* ================= RENDER ================= */
-function renderTable(type, rows) {
+function renderTable(type, rows) {  //rows itu list data transaksi/array
     const tbody = document.getElementById(type + 'TableBody');
 
-    tbody.innerHTML = rows.length
-        ? rows.map(t => `
+    // ternary operator, klu ada data tampikan data,, klu gada data ya no data
+    tbody.innerHTML = rows.length //apakah datanya > 0?, klu iya? buat baris tabel, t adalah singkatan dari satu item transaksi
+        ? rows.map(t => ` 
             <tr class="border-b hover:bg-gray-50">
                 <td class="px-4 py-3">${new Date(t.date).toLocaleDateString('id-ID')}</td>
                 <td class="px-4 py-3">${t.category}</td>
@@ -264,60 +270,70 @@ function renderTable(type, rows) {
                         class="px-3 py-1 bg-red-500 text-white rounded text-xs">DELETE</button>
                 </td>
             </tr>
-        `).join('')
+        `).join('') //hasil .map itu array, ahrus ada join krn html gabisa baca array, join satukan semua tr jdi satu teks panjang
         : `<tr><td colspan="5" class="py-6 text-center text-gray-400">No data</td></tr>`;
 }
 
 function renderTotal(type, total) {
+    // drpd bikin if-else panjang, dia lgsng cek dlm kurung, klu type nya income cari elemen id totalincome,kalau bukan cari total expense
     document.getElementById(type === 'income' ? 'totalIncome' : 'totalExpense')
-        .innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        .innerText = `Rp ${total.toLocaleString('id-ID')}`; //innertext utk ganti tulisan di elemen tsb dgn format rupiah
 }
 
 function renderChart(type, chartData) {
+    //ctx cari kanvas tmpt gambar grafik
     const ctx = document.getElementById(type + 'Chart');
+    // cek variabel global, apakah sbelumnya sudah ada grafik yg tergambar disitu 
     const chartRef = type === 'income' ? incomeChart : expenseChart;
+    // destroys any existing chart to avoid overlaps, klu ada grafik lama buang dulu
     if (chartRef) chartRef.destroy();
 
+    // bikin chart.js baru dgn labels (nama kategori) n data sum dari chartdata
     const chart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: Object.keys(chartData),
+            labels: Object.keys(chartData), //ambil keys kategori,"salary", "freelance"
             datasets: [{
-                data: Object.values(chartData),
+                data: Object.values(chartData), //ambil valuenya, total per kategori, "400000", "200000"
                 backgroundColor: ['#4CAF50','#FFC107','#03A9F4','#E91E63','#9C27B0']
             }]
         },
         options: { responsive: true, maintainAspectRatio: false }
     });
 
+    // stelah grafik baru dibuat simpan hasilnya ke variabel global (incomechart), suapaya klu fungsi renderchart dipanggil ada referensi untuk destroy
     type === 'income' ? incomeChart = chart : expenseChart = chart;
 }
 
 /* ================= SUBMIT ================= */
 async function submitForm(type) {
     const prefix = type;
-    const id = document.getElementById(prefix + 'Id').value;
+    const id = document.getElementById(prefix + 'Id').value; //cek input hidden di html biasanya di incomeId, jika id koson brrti user mau tambah data baru, klu ada isi bbrti edit data dgn id gtu
 
-    const payload = {
+    const payload = { //data dari form yg iinoput user, simpan ke objek js nmnya payload
         type,
-        date: document.getElementById(prefix + 'Date').value,
+        date: document.getElementById(prefix + 'Date').value, //value ambil nilai saat t ini dlm formulir
         category: document.getElementById(prefix + 'Category').value,
         notes: document.getElementById(prefix + 'Notes').value,
         amount: document.getElementById(prefix + 'Amount').value
     };
 
+    // gunakan fetch tergantung variabel id tdi, klu ada id kirim ke transaction yg id nya brp, klu gada kirim ke transactions umum
     await fetch(id ? `/transactions/${id}` : '/transactions', {
-        method: id ? 'PUT' : 'POST',
+        method: id ? 'PUT' : 'POST', //klu ada id put, klu gada kita post
         headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrf
+            'Content-Type': 'application/json', //britahu bahwa kirim data dlm format json
+            'X-CSRF-TOKEN': csrf //dri line 220, dipakai untuk ini, agar lolos stapam laravel
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload) //server tidak ngeti objek js mentah, hrus ubah payload jadi string/text agar bisa dikirim lewat internet
     });
 
-    document.getElementById(prefix + 'Form').reset();
-    document.getElementById(prefix + 'Id').value = '';
-    load(type);
+    // stelah data terkirim (krn ada await, yg ini baru jln klu sukses)
+    document.getElementById(prefix + 'Form').reset(); //hapus smua tulisan di form biar jdi kosong lgi
+    document.getElementById(prefix + 'Id').value = ''; //bayangin hbis edit, form emg kosong, tpi input hideen id masih berisi angka,
+    //  klu ga dikosongkan nnti sitem ngira masih edit id itu, jdi dikosongkan id nya
+    
+    load(type); //panggil fungsi load yg tadi utk refresh tabel n grafik
 }
 
 /* ================= DELETE ================= */

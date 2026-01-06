@@ -9,9 +9,9 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up(): void //fungsi yg jalan kalau php artisan migrate dijalankan
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) { //untuk buat tabel categories, $tabel itu object blueprint utk definisikan kolom2 tabel
             $table->id();
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->text('nama_kategori');
@@ -23,8 +23,8 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down(): void //fungsi untuk batalkan migration
     {
-        Schema::dropIfExists('kategoris');
+        Schema::dropIfExists('categories');
     }
 };
