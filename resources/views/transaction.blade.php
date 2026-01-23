@@ -293,7 +293,7 @@
             // bikin chart.js baru dgn labels (nama kategori) n data sum dari chartdata
             const chart = new Chart(ctx, {
                 type: 'doughnut',
-                data: {
+                data: { //isi grafik
                     labels: Object.keys(chartData), //ambil keys kategori,"salary", "freelance"
                     datasets: [{
                         data: Object.values(chartData), //ambil valuenya, total per kategori, "400000", "200000"
@@ -354,7 +354,7 @@
         async function edit(type, id) {//membuat fungsi edit yang butuh type (income/expense) dan id transaksi, punya tugas untuk edit data tpi harus nunggu server lamanya load (async)
             const res = await fetch(`/transactions/data/${type}`);//kirim request ke server berdasarkan type utk dapetin data transaksi
             const data = await res.json();//menerima data yang dikirmkan dari server (controller) yang diubah ke json
-            const t = data.transactions.find(x => x.id === id);//ini digunkan untuk mencari transaksi yang spesifik berdasarkan id yang dikirim dan id nya harus sama
+            const t = data.transactions.find(x => x.id === id);//ini digunkan untuk mencari transaksi yang spesifik berdasarkan id yang dikirim dan id nya harus sama, klu id nya sama simpan data ke variabel t
 
             document.getElementById(type + 'Id').value = t.id;//getelemenbyid tu kita ambil (income/expense)Id, lalu diisi dgn id transaksi yg mau diedit
             document.getElementById(type + 'Date').value = t.date;//ambil data dari transaksi dan masukan untuk edit data
