@@ -9,6 +9,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/fix', function () {
+    Artisan::call('session:table');
+    Artisan::call('migrate', ['--force' => true]);
+    return 'fixed!';
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
