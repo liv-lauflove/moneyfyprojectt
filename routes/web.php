@@ -9,6 +9,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// routes/web.php
+Route::get('/migrate', function () {
+    Artisan::call('migrate', ['--force' => true]);
+    return 'Migration done!';
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
